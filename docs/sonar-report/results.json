@@ -1,0 +1,295 @@
+{
+  "project": {
+    "component": {
+      "key": "aceest-fitness",
+      "name": "ACEest Fitness",
+      "qualifier": "TRK",
+      "analysisDate": "2026-04-30T06:37:01+0000",
+      "tags": [],
+      "visibility": "public",
+      "leakPeriodDate": "2026-04-30T06:29:24+0000",
+      "version": "3.0.0",
+      "needIssueSync": false,
+      "isAiCodeFixEnabled": false
+    },
+    "ancestors": []
+  },
+  "quality_gate": {
+    "projectStatus": {
+      "status": "OK",
+      "conditions": [
+        {
+          "status": "OK",
+          "metricKey": "new_coverage",
+          "comparator": "LT",
+          "errorThreshold": "80",
+          "actualValue": "83.7"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_duplicated_lines_density",
+          "comparator": "GT",
+          "errorThreshold": "3",
+          "actualValue": "0.0"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_violations",
+          "comparator": "GT",
+          "errorThreshold": "0",
+          "actualValue": "0"
+        }
+      ],
+      "ignoredConditions": false,
+      "period": {
+        "mode": "PREVIOUS_VERSION",
+        "date": "2026-04-30T06:29:24+0000"
+      },
+      "caycStatus": "compliant"
+    }
+  },
+  "measures": {
+    "component": {
+      "key": "aceest-fitness",
+      "name": "ACEest Fitness",
+      "qualifier": "TRK",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "80.9",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "125"
+        },
+        {
+          "metric": "reliability_rating",
+          "value": "1.0",
+          "bestValue": true
+        },
+        {
+          "metric": "code_smells",
+          "value": "0",
+          "bestValue": true
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": true
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": true
+        },
+        {
+          "metric": "security_hotspots",
+          "value": "5",
+          "bestValue": false
+        },
+        {
+          "metric": "sqale_index",
+          "value": "0",
+          "bestValue": true
+        },
+        {
+          "metric": "sqale_rating",
+          "value": "1.0",
+          "bestValue": true
+        },
+        {
+          "metric": "bugs",
+          "value": "0",
+          "bestValue": true
+        },
+        {
+          "metric": "branch_coverage",
+          "value": "66.7",
+          "bestValue": false
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "108",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "597"
+        },
+        {
+          "metric": "vulnerabilities",
+          "value": "0",
+          "bestValue": true
+        },
+        {
+          "metric": "line_coverage",
+          "value": "84.4",
+          "bestValue": false
+        }
+      ]
+    }
+  },
+  "issues": {
+    "total": 0,
+    "p": 1,
+    "ps": 100,
+    "paging": {
+      "pageIndex": 1,
+      "pageSize": 100,
+      "total": 0
+    },
+    "effortTotal": 0,
+    "issues": [],
+    "components": [],
+    "facets": []
+  },
+  "hotspots": {
+    "paging": {
+      "pageIndex": 1,
+      "pageSize": 100,
+      "total": 5
+    },
+    "hotspots": [
+      {
+        "key": "326b7ab5-335c-4fd2-bd12-27554ad91a6e",
+        "component": "aceest-fitness:app/__init__.py",
+        "project": "aceest-fitness",
+        "securityCategory": "csrf",
+        "vulnerabilityProbability": "HIGH",
+        "status": "TO_REVIEW",
+        "line": 8,
+        "message": "Make sure disabling CSRF protection is safe here.",
+        "author": "atul411@users.noreply.github.com",
+        "creationDate": "2026-04-30T05:19:12+0000",
+        "updateDate": "2026-04-30T06:29:24+0000",
+        "textRange": {
+          "startLine": 8,
+          "endLine": 8,
+          "startOffset": 10,
+          "endOffset": 57
+        },
+        "flows": [],
+        "ruleKey": "python:S4502",
+        "messageFormattings": []
+      },
+      {
+        "key": "8f19d055-c0a8-4c3b-9ea4-3aff9a2a1d4e",
+        "component": "aceest-fitness:app/auth.py",
+        "project": "aceest-fitness",
+        "securityCategory": "csrf",
+        "vulnerabilityProbability": "HIGH",
+        "status": "TO_REVIEW",
+        "line": 38,
+        "message": "Make sure allowing safe and unsafe HTTP methods is safe here.",
+        "author": "atul411@users.noreply.github.com",
+        "creationDate": "2026-04-30T05:19:12+0000",
+        "updateDate": "2026-04-30T06:29:24+0000",
+        "textRange": {
+          "startLine": 38,
+          "endLine": 38,
+          "startOffset": 1,
+          "endOffset": 44
+        },
+        "flows": [],
+        "ruleKey": "python:S3752",
+        "messageFormattings": []
+      },
+      {
+        "key": "e88c4d9d-8404-4d4f-8ff0-8c2579f29c16",
+        "component": "aceest-fitness:app/auth.py",
+        "project": "aceest-fitness",
+        "securityCategory": "csrf",
+        "vulnerabilityProbability": "HIGH",
+        "status": "TO_REVIEW",
+        "line": 67,
+        "message": "Make sure allowing safe and unsafe HTTP methods is safe here.",
+        "author": "atul411@users.noreply.github.com",
+        "creationDate": "2026-04-30T05:19:12+0000",
+        "updateDate": "2026-04-30T06:29:24+0000",
+        "textRange": {
+          "startLine": 67,
+          "endLine": 67,
+          "startOffset": 1,
+          "endOffset": 45
+        },
+        "flows": [],
+        "ruleKey": "python:S3752",
+        "messageFormattings": []
+      },
+      {
+        "key": "0a50847f-4ed3-4f58-a2d4-f42c46e8f395",
+        "component": "aceest-fitness:app/workouts.py",
+        "project": "aceest-fitness",
+        "securityCategory": "weak-cryptography",
+        "vulnerabilityProbability": "MEDIUM",
+        "status": "TO_REVIEW",
+        "line": 138,
+        "message": "Make sure that using this pseudorandom number generator is safe here.",
+        "author": "atul411@users.noreply.github.com",
+        "creationDate": "2026-04-30T05:19:12+0000",
+        "updateDate": "2026-04-30T06:29:24+0000",
+        "textRange": {
+          "startLine": 138,
+          "endLine": 138,
+          "startOffset": 19,
+          "endOffset": 64
+        },
+        "flows": [],
+        "ruleKey": "python:S2245",
+        "messageFormattings": []
+      },
+      {
+        "key": "427d3cb8-04f0-4800-9b79-3bec8745008f",
+        "component": "aceest-fitness:app/workouts.py",
+        "project": "aceest-fitness",
+        "securityCategory": "weak-cryptography",
+        "vulnerabilityProbability": "MEDIUM",
+        "status": "TO_REVIEW",
+        "line": 139,
+        "message": "Make sure that using this pseudorandom number generator is safe here.",
+        "author": "atul411@users.noreply.github.com",
+        "creationDate": "2026-04-30T05:19:12+0000",
+        "updateDate": "2026-04-30T06:29:24+0000",
+        "textRange": {
+          "startLine": 139,
+          "endLine": 139,
+          "startOffset": 21,
+          "endOffset": 67
+        },
+        "flows": [],
+        "ruleKey": "python:S2245",
+        "messageFormattings": []
+      }
+    ],
+    "components": [
+      {
+        "key": "aceest-fitness:app/__init__.py",
+        "qualifier": "FIL",
+        "name": "__init__.py",
+        "longName": "app/__init__.py",
+        "path": "app/__init__.py"
+      },
+      {
+        "key": "aceest-fitness",
+        "qualifier": "TRK",
+        "name": "ACEest Fitness",
+        "longName": "ACEest Fitness"
+      },
+      {
+        "key": "aceest-fitness:app/workouts.py",
+        "qualifier": "FIL",
+        "name": "workouts.py",
+        "longName": "app/workouts.py",
+        "path": "app/workouts.py"
+      },
+      {
+        "key": "aceest-fitness:app/auth.py",
+        "qualifier": "FIL",
+        "name": "auth.py",
+        "longName": "app/auth.py",
+        "path": "app/auth.py"
+      }
+    ]
+  }
+}

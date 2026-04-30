@@ -74,7 +74,7 @@ def logout():
     return jsonify(status="logged out")
 
 
-@bp.route("/me")
+@bp.route("/me", methods=["GET"])
 @login_required
 def me():
     return jsonify(user=session.get("user"), role=session.get("role"))

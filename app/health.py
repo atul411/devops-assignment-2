@@ -4,7 +4,7 @@ from . import db as db_module
 bp = Blueprint("health", __name__)
 
 
-@bp.route("/health")
+@bp.route("/health", methods=["GET"])
 def health():
     return jsonify(
         status="ok",
@@ -13,7 +13,7 @@ def health():
     )
 
 
-@bp.route("/ready")
+@bp.route("/ready", methods=["GET"])
 def ready():
     try:
         conn = db_module.get_db()

@@ -6,6 +6,8 @@ from .db import get_db
 
 bp = Blueprint("workouts", __name__)
 
+CLIENT_LOOKUP_SQL = "SELECT 1 FROM clients WHERE name = ?"
+
 PROGRAM_TEMPLATES = {
     "Fat Loss": ["Full Body HIIT", "Circuit Training", "Cardio + Weights"],
     "Muscle Gain": ["Push/Pull/Legs", "Upper/Lower Split", "Full Body Strength"],
@@ -50,7 +52,7 @@ def add_workout(client_name):
     notes = payload.get("notes") or ""
 
     db = get_db()
-    if db.execute("SELECT 1 FROM clients WHERE name = ?", (client_name,)).fetchone() is None:
+    if db.execute(CLIENT_LOOKUP_SQL, (client_name,)).fetchone() is None:
         abort(404, description=f"client {client_name} not found")
     cur = db.execute(
         """INSERT INTO workouts (client_name, date, workout_type, duration_min, notes)
@@ -104,7 +106,7 @@ def add_metric(client_name):
 
     metric_date = payload.get("date") or date.today().isoformat()
     db = get_db()
-    if db.execute("SELECT 1 FROM clients WHERE name = ?", (client_name,)).fetchone() is None:
+    if db.execute(CLIENT_LOOKUP_SQL, (client_name,)).fetchone() is None:
         abort(404, description=f"client {client_name} not found")
     db.execute(
         """INSERT INTO metrics (client_name, date, weight, waist, bodyfat)
@@ -131,7 +133,7 @@ def list_metrics(client_name):
 @login_required
 def generate_program(client_name):
     db = get_db()
-    if db.execute("SELECT 1 FROM clients WHERE name = ?", (client_name,)).fetchone() is None:
+    if db.execute(CLIENT_LOOKUP_SQL, (client_name,)).fetchone() is None:
         abort(404, description=f"client {client_name} not found")
     program_type = random.choice(list(PROGRAM_TEMPLATES.keys()))
     program_detail = random.choice(PROGRAM_TEMPLATES[program_type])
@@ -143,7 +145,7 @@ def generate_program(client_name):
     return jsonify(client=client_name, program_type=program_type, program=program_detail)
 
 
-@bp.route("/dashboard")
+@bp.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
     db = get_db()

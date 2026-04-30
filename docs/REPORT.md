@@ -78,10 +78,11 @@ All five are implemented in `k8s/<strategy>/` and can be applied independently w
 
 - **Zero-downtime deploys:** rolling update with `maxUnavailable=0` plus readiness probes guarantees no in-flight requests are dropped.
 - **Single-step rollback:** every strategy has a documented one-command rollback (`kubectl rollout undo`, Service selector flip, or canary-weight back to 0).
-- **Quality enforced at every commit:** flake8 + 48 pytest tests + SonarQube quality gate (≥80% line coverage, no critical/blocker issues) — a build cannot reach Docker Hub without passing all four.
+- **Quality enforced at every commit:** flake8 + 48 pytest tests + SonarQube quality gate (≥80% line coverage, no critical/blocker issues) — a build cannot reach Docker Hub without passing all four. The SonarQube run executed during preparation **passed** the gate cleanly: 0 bugs, 0 vulnerabilities, 0 code smells, 80.9% coverage, all A ratings (see `docs/sonar-report/REPORT.md` for full results).
 - **Deterministic image lineage:** image tags are `${BUILD_NUMBER}` + `latest` + git semver tag, so any deployed pod traces back to exactly one commit.
 - **Self-contained reproducibility:** `make install && make test` and `docker-compose up -d --build` give a fresh contributor a working environment in under a minute. K8s strategies isolated to one folder each, applied with a single `kubectl apply -k`.
 - **Defensive automation:** Jenkins post-failure block runs `kubectl rollout undo` automatically on `main` failures; HEALTHCHECK directive lets Docker mark unhealthy containers; PVC ensures state survives pod restarts.
+- **Secure-by-default seeding:** the admin password seeds from `ADMIN_INITIAL_PASSWORD` env var; if absent, a random 16-character password is generated at first init and logged. SonarQube no longer flags hard-coded credentials.
 
 ---
 
@@ -89,16 +90,19 @@ All five are implemented in `k8s/<strategy>/` and can be applied independently w
 
 | Artefact | Location |
 |----------|----------|
-| Flask application | `app/` (5 blueprints, 358 statements) |
-| Pytest suite | `tests/` (48 tests, 81% coverage) |
+| Flask application | `app/` (5 blueprints, 597 lines of code) |
+| Pytest suite | `tests/` (48 tests, 80.9% coverage — verified by SonarQube) |
 | Dockerfile | `Dockerfile` (multi-stage, slim, non-root, healthcheck) |
 | Jenkinsfile | `Jenkinsfile` (declarative, polled SCM, quality gate, auto-rollback) |
 | SonarQube config | `sonar-project.properties` |
+| **SonarQube analysis report** | `docs/sonar-report/REPORT.md` + `results.json` (Quality Gate **PASSED**, 0 issues, all A ratings) |
 | K8s manifests | `k8s/{base,rolling-update,blue-green,canary,shadow,ab-testing}/` |
 | Helper scripts | `scripts/{bluegreen-switch,canary-promote,rollback}.sh` |
 | GitHub Actions (secondary CI) | `.github/workflows/ci.yml` |
 | Architecture diagram | `docs/architecture.md` |
+| Submission checklist | `docs/SUBMISSION.md` |
+| Deployment playbook | `docs/DEPLOYMENT.md` |
 
-GitHub repository: **`https://github.com/atul411/devops-assignment-2`** (replace before submission)
-Docker Hub: **`https://hub.docker.com/r/atul411/aceest-fitness`**
-Cluster endpoint: **`http://aceest.local`** (replace with your Minikube/EKS/GKE address)
+GitHub repository: **https://github.com/atul411/devops-assignment-2** (public)
+Docker Hub: **https://hub.docker.com/r/atul411/aceest-fitness** (push triggered by `DOCKERHUB_TOKEN` secret in repo)
+Cluster endpoint: see `docs/SUBMISSION.md` § 5 step 2 for spinning up a free-tier DigitalOcean K8s cluster (`kubectl get svc aceest-fitness -n aceest` → `EXTERNAL-IP`)

@@ -39,7 +39,7 @@ def create_app(config_object=None):
         app.register_blueprint(auth_bp)
         app.register_blueprint(workouts_bp)
 
-    @app.route("/")
+    @app.route("/", methods=["GET"])
     def index():
         return redirect(url_for("programs.list_programs"))
 

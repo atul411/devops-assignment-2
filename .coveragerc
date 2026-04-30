@@ -1,6 +1,7 @@
 [run]
 branch = True
 source = app
+relative_files = True
 omit =
     app/__init__.py
     */templates/*
@@ -8,3 +9,8 @@ omit =
 [report]
 show_missing = True
 skip_covered = False
+
+[paths]
+source =
+    app/
+    /usr/src/app/

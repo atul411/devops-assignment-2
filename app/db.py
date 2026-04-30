@@ -1,3 +1,6 @@
+import os
+import secrets
+import string
 import sqlite3
 from flask import current_app, g
 from werkzeug.security import generate_password_hash
@@ -75,6 +78,18 @@ def close_db(_e=None):
         db.close()
 
 
+def _initial_admin_password():
+    """Read seed password from env, or generate a random one and log it."""
+    pw = os.environ.get("ADMIN_INITIAL_PASSWORD")
+    if pw:
+        return pw
+    pw = "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(16))
+    current_app.logger.warning(
+        "ADMIN_INITIAL_PASSWORD not set; generated random admin password: %s", pw
+    )
+    return pw
+
+
 def init_db():
     db = get_db()
     db.executescript(SCHEMA)
@@ -82,7 +97,7 @@ def init_db():
     if cur.fetchone() is None:
         db.execute(
             "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",
-            ("admin", generate_password_hash("admin", method="pbkdf2:sha256"), "Admin"),
+            ("admin", generate_password_hash(_initial_admin_password(), method="pbkdf2:sha256"), "Admin"),
         )
     db.commit()
 

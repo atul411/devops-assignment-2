@@ -1,6 +1,10 @@
+import os
 import pytest
 from app import create_app
 from app.config import TestConfig
+
+# Tests log in as admin/admin; pin the seed password so the seeded admin user has it.
+os.environ.setdefault("ADMIN_INITIAL_PASSWORD", "admin")
 
 
 @pytest.fixture

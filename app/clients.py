@@ -1,13 +1,29 @@
-from datetime import datetime
+from datetime import datetime, timezone
+import sqlite3
 from flask import Blueprint, abort, jsonify, redirect, render_template, request, url_for
 from .db import get_db
 from .models import calorie_for, get_program
 
 bp = Blueprint("clients", __name__)
 
+CLIENT_LOOKUP_SQL = "SELECT 1 FROM clients WHERE name = ?"
+
 
 def _row_to_dict(row):
     return {key: row[key] for key in row.keys()} if row else None
+
+
+def _parse_numeric_fields(payload):
+    """Coerce client numeric fields. Returns (age, height, weight, target_weight) or raises ValueError."""
+    def _f(name, cast):
+        val = payload.get(name)
+        return cast(val) if val not in (None, "") else None
+    return (
+        _f("age", int),
+        _f("height", float),
+        _f("weight", float),
+        _f("target_weight", float),
+    )
 
 
 @bp.route("/", methods=["GET"])
@@ -31,10 +47,7 @@ def create_client():
         return jsonify(error="program must be one of FL, MG, BG"), 400
 
     try:
-        age = int(payload.get("age")) if payload.get("age") not in (None, "") else None
-        height = float(payload.get("height")) if payload.get("height") not in (None, "") else None
-        weight = float(payload.get("weight")) if payload.get("weight") not in (None, "") else None
-        target_weight = float(payload.get("target_weight")) if payload.get("target_weight") not in (None, "") else None
+        age, height, weight, target_weight = _parse_numeric_fields(payload)
     except (TypeError, ValueError):
         return jsonify(error="age/height/weight/target_weight must be numeric"), 400
 
@@ -54,10 +67,8 @@ def create_client():
             (name, age, height, weight, program, calories, target_weight),
         )
         db.commit()
-    except Exception as exc:
-        if "UNIQUE" in str(exc):
-            return jsonify(error=f"client {name} already exists"), 409
-        return jsonify(error=str(exc)), 500
+    except sqlite3.IntegrityError:
+        return jsonify(error=f"client {name} already exists"), 409
 
     if request.is_json:
         return jsonify(id=cur.lastrowid, name=name, program=program, calories=calories), 201
@@ -140,10 +151,10 @@ def add_progress(name):
     if not 0 <= adherence <= 100:
         return jsonify(error="adherence must be 0-100"), 400
 
-    week = payload.get("week") or datetime.utcnow().strftime("Week %U - %Y")
+    week = payload.get("week") or datetime.now(timezone.utc).strftime("Week %U - %Y")
 
     db = get_db()
-    if db.execute("SELECT 1 FROM clients WHERE name = ?", (name,)).fetchone() is None:
+    if db.execute(CLIENT_LOOKUP_SQL, (name,)).fetchone() is None:
         abort(404, description=f"client {name} not found")
     db.execute(
         "INSERT INTO progress (client_name, week, adherence) VALUES (?, ?, ?)",

@@ -4,7 +4,7 @@ from .models import PROGRAMS, SITE_METRICS, calorie_for, get_program
 bp = Blueprint("programs", __name__)
 
 
-@bp.route("/programs")
+@bp.route("/programs", methods=["GET"])
 def list_programs():
     if request.accept_mimetypes.best == "application/json" or \
             request.args.get("format") == "json":
@@ -16,7 +16,7 @@ def list_programs():
     )
 
 
-@bp.route("/programs/<key>")
+@bp.route("/programs/<key>", methods=["GET"])
 def get_program_view(key):
     program = get_program(key)
     if program is None:
@@ -26,7 +26,7 @@ def get_program_view(key):
     return render_template("program_detail.html", program=program)
 
 
-@bp.route("/programs/<key>/calories")
+@bp.route("/programs/<key>/calories", methods=["GET"])
 def calorie_calc(key):
     weight = request.args.get("weight", type=float)
     if weight is None:

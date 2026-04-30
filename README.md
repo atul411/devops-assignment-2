@@ -114,15 +114,18 @@ This repo is pre-configured for the following identities — replace if you fork
 
 ## Submission checklist
 
-- [x] Flask app + 3 versions
-- [x] Pytest suite (48 tests, 81% coverage)
-- [x] Dockerfile (multi-stage, non-root, healthcheck)
-- [x] Jenkinsfile (declarative, pollSCM, SonarQube quality gate)
-- [x] Kubernetes manifests for all 5 deployment strategies
-- [x] SonarQube config + coverage reporting
+- [x] Flask app + 3 versions (single image, FEATURE_LEVEL toggle)
+- [x] Pytest suite (48 tests, 80.9% coverage)
+- [x] Dockerfile (multi-stage, non-root, healthcheck) — verified via GitHub Actions
+- [x] Jenkinsfile (declarative, pollSCM, SonarQube quality gate, auto-rollback)
+- [x] Kubernetes manifests for all 5 deployment strategies — validated against live API
+- [x] **SonarQube analysis executed — Quality Gate PASSED** (0 bugs, 0 vulns, 0 smells, all A ratings)
 - [x] Rollback scripts (bluegreen-switch, canary-promote, rollback)
 - [x] 2-3 page report ([docs/REPORT.md](docs/REPORT.md))
-- [ ] **Push to GitHub** — repo must be public for grading
-- [ ] **Configure Jenkins credentials** (`dockerhub-credentials`, `kubeconfig`)
-- [ ] **Run pipeline** end-to-end
-- [ ] **Submit cluster endpoint URL + Docker Hub repo URL + GitHub repo URL**
+- [x] Submission checklist ([docs/SUBMISSION.md](docs/SUBMISSION.md))
+- [x] Deployment playbook ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md))
+- [x] **GitHub repo public** at https://github.com/atul411/devops-assignment-2
+- [x] GitHub Actions runs green
+- [ ] Docker Hub push (needs your `DOCKERHUB_TOKEN` secret — workflow auto-pushes once set)
+- [ ] Public cluster endpoint (needs cloud K8s — see DEPLOYMENT.md § 4(B))
+- [ ] Live Jenkins build screenshot (Jenkins is running locally; complete plugin install via UI)
