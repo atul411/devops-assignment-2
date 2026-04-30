@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# Apply the base manifests FIRST: kubectl apply -k k8s/base/
+# Then apply this strategy: kubectl apply -k k8s/shadow/
+# (Requires Istio installed; namespace must be istio-injection=enabled.)
 namespace: aceest
 resources:
-  - ../base/namespace.yaml
-  - ../base/configmap.yaml
-  - ../base/pvc.yaml
   - istio-virtualservice.yaml
