@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+  labels:
+    app: aceest-fitness
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aceest-fitness
+  template:
+    metadata:
+      labels:
+        app: aceest-fitness
+        version: stable
+    spec:
+      containers:
+        - name: app
+          image: atul411/aceest-fitness:latest
+          ports:
+            - containerPort: 5000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: aceest-config
+            - secretRef:
+                name: aceest-secrets
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: aceest-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+spec:
+  selector:
+    app: aceest-fitness
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: aceest.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aceest-fitness
+                port:
+                  number: 80

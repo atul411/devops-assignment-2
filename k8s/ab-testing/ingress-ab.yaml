@@ -1,0 +1,44 @@
+# Header-based A/B routing using nginx-ingress canary annotations.
+# Default ingress goes to variant A.
+# Requests with `X-Variant: B` go to variant B.
+# Cookie-based routing also possible: `nginx.ingress.kubernetes.io/canary-by-cookie`.
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-fitness-variant-a
+  namespace: aceest
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: aceest.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aceest-fitness-variant-a
+                port: { number: 80 }
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-fitness-variant-b
+  namespace: aceest
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: "X-Variant"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "B"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: aceest.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aceest-fitness-variant-b
+                port: { number: 80 }

@@ -1,0 +1,16 @@
+# Single Service routes traffic to whichever color is selected via the `color` label.
+# Patch this selector with bluegreen-switch.sh to flip live traffic instantly.
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+spec:
+  selector:
+    app: aceest-fitness
+    color: blue              # <-- change to 'green' to flip live traffic
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  type: ClusterIP

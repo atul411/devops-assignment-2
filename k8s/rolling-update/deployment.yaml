@@ -1,0 +1,45 @@
+# Rolling Update strategy — overrides base Deployment with explicit RollingUpdate fields.
+# This is Kubernetes' default; manifest is included to make the strategy explicit
+# and to set conservative surge/unavailable values for zero-downtime deploys.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1          # 1 extra pod during rollout (25% over capacity)
+      maxUnavailable: 0    # never drop below 4 healthy pods => zero downtime
+  minReadySeconds: 10      # pod must be Ready for 10s before counting as available
+  revisionHistoryLimit: 10 # keep 10 old ReplicaSets for `kubectl rollout undo`
+  selector:
+    matchLabels:
+      app: aceest-fitness
+  template:
+    metadata:
+      labels:
+        app: aceest-fitness
+        version: stable
+    spec:
+      containers:
+        - name: app
+          image: atul411/aceest-fitness:latest
+          ports:
+            - containerPort: 5000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: aceest-config
+            - secretRef:
+                name: aceest-secrets
+          readinessProbe:
+            httpGet: { path: /ready, port: http }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+            initialDelaySeconds: 15
+            periodSeconds: 20

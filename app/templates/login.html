@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Login · ACEest Fitness{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 360px; margin: 2rem auto;">
+  <h2>Login</h2>
+  <form method="post">
+    <p><label>Username<br><input type="text" name="username" required></label></p>
+    <p><label>Password<br><input type="password" name="password" required></label></p>
+    <input type="submit" value="Sign in">
+  </form>
+  <p style="font-size: 0.8rem; color: #888;">Default: admin / admin</p>
+</div>
+{% endblock %}

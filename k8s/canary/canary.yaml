@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-fitness-canary
+  namespace: aceest
+  labels: { app: aceest-fitness, track: canary }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: aceest-fitness, track: canary }
+  template:
+    metadata:
+      labels: { app: aceest-fitness, track: canary, version: v3 }
+    spec:
+      containers:
+        - name: app
+          image: atul411/aceest-fitness:v3.0.0
+          ports: [{ containerPort: 5000, name: http }]
+          envFrom:
+            - configMapRef: { name: aceest-config }
+            - secretRef:    { name: aceest-secrets }
+          env:
+            - { name: FEATURE_LEVEL, value: "3" }
+            - { name: APP_VERSION,  value: "3.0.0" }
+          readinessProbe: { httpGet: { path: /ready, port: http }, initialDelaySeconds: 5, periodSeconds: 5 }
+          livenessProbe:  { httpGet: { path: /health, port: http }, initialDelaySeconds: 15, periodSeconds: 20 }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-fitness-canary
+  namespace: aceest
+spec:
+  selector: { app: aceest-fitness, track: canary }
+  ports: [{ port: 80, targetPort: 5000 }]

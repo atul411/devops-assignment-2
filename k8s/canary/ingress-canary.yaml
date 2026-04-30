@@ -1,0 +1,45 @@
+# Two ingress objects against the SAME host:
+#  - `aceest-fitness` routes traffic to the stable Service by default
+#  - `aceest-fitness-canary` is annotated with `canary: true` + `canary-weight: 25`,
+#     so nginx-ingress diverts 25% of traffic to the canary Service.
+# To promote: bump canary-weight to 50, 100; then delete the canary ingress
+# and re-point the stable ingress at the canary image.
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: aceest.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aceest-fitness-stable
+                port: { number: 80 }
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-fitness-canary
+  namespace: aceest
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "25"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: aceest.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aceest-fitness-canary
+                port: { number: 80 }

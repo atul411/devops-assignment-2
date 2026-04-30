@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Programs · ACEest Fitness{% endblock %}
+{% block content %}
+<h2>Training Programs</h2>
+<p>Capacity: {{ site.capacity }} users · Area: {{ site.area_sqft }} sq ft · Break-even: {{ site.break_even_members }} members</p>
+{% for key, p in programs.items() %}
+  <div class="card" style="border-left-color: {{ p.color }}">
+    <h3><a href="{{ url_for('programs.get_program_view', key=key) }}" style="color:{{ p.color }}">{{ p.name }} ({{ key }})</a></h3>
+    <p><strong>Calorie factor:</strong> {{ p.factor }} kcal/kg</p>
+    <h4>Workout</h4>
+    <pre>{{ p.workout }}</pre>
+    <h4>Diet</h4>
+    <pre>{{ p.diet }}</pre>
+  </div>
+{% endfor %}
+{% endblock %}

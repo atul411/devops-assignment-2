@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}ACEest Fitness{% endblock %}</title>
+  <style>
+    body { font-family: -apple-system, Helvetica, Arial, sans-serif; background: #1a1a1a; color: #f4f4f4; margin: 0; padding: 0; }
+    header { background: #d4af37; color: #1a1a1a; padding: 1rem 2rem; }
+    header h1 { margin: 0; }
+    nav { background: #111; padding: 0.5rem 2rem; }
+    nav a { color: #d4af37; margin-right: 1rem; text-decoration: none; }
+    main { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+    .card { background: #222; border-left: 4px solid #d4af37; padding: 1rem 1.5rem; margin-bottom: 1rem; border-radius: 4px; }
+    pre { background: #111; padding: 0.75rem; border-radius: 4px; white-space: pre-wrap; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid #333; }
+    th { color: #d4af37; }
+    .flash { background: #e74c3c; color: white; padding: 0.75rem; border-radius: 4px; margin-bottom: 1rem; }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
+    button, input[type=submit] { background: #d4af37; color: #1a1a1a; border: 0; padding: 0.5rem 1rem; cursor: pointer; border-radius: 3px; }
+    input, select { background: #333; color: white; border: 1px solid #555; padding: 0.4rem; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <header><h1>ACEest Functional Fitness</h1></header>
+  <nav>
+    <a href="{{ url_for('programs.list_programs') }}">Programs</a>
+    {% if config.FEATURE_LEVEL >= 2 %}<a href="{{ url_for('clients.list_clients') }}">Clients</a>{% endif %}
+    {% if config.FEATURE_LEVEL >= 3 %}
+      <a href="{{ url_for('workouts.dashboard') }}">Dashboard</a>
+      {% if session.user %}
+        <a href="{{ url_for('auth.logout') }}">Logout ({{ session.user }})</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+      {% endif %}
+    {% endif %}
+  </nav>
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

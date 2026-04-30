@@ -1,0 +1,25 @@
+# Vanilla-K8s shadow fallback (no Istio required).
+# Uses nginx-ingress `mirror-target` annotation to fire-and-forget duplicate
+# requests to the shadow service while the user gets the prod response.
+# Limitation: nginx mirror discards the response, so any side-effects in shadow
+# (e.g. DB writes) DO occur — point shadow at a separate DB instance in real use.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-fitness
+  namespace: aceest
+  annotations:
+    nginx.ingress.kubernetes.io/mirror-target: "http://aceest-fitness-shadow.aceest.svc.cluster.local"
+    nginx.ingress.kubernetes.io/mirror-request-body: "on"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: aceest.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aceest-fitness-prod
+                port: { number: 80 }

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aceest-config
+  namespace: aceest
+data:
+  FEATURE_LEVEL: "3"
+  APP_VERSION: "3.0.0"
+  GUNICORN_WORKERS: "3"
+  GUNICORN_LOG_LEVEL: "info"
+  DATABASE: "/data/aceest_fitness.db"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aceest-secrets
+  namespace: aceest
+type: Opaque
+stringData:
+  # In production, populate from a vault. Rotate periodically.
+  SECRET_KEY: "REPLACE_WITH_RANDOM_64_BYTES"

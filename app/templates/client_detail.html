@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ client.name }} · ACEest Fitness{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>{{ client.name }}</h2>
+  <p>Age: {{ client.age or '—' }} · Height: {{ client.height or '—' }} cm · Weight: {{ client.weight or '—' }} kg</p>
+  <p>Program: <span class="badge" style="background:#d4af37;color:#1a1a1a">{{ client.program or '—' }}</span> · Daily Calories: {{ client.calories or '—' }} kcal</p>
+  <p>Target weight: {{ client.target_weight or '—' }} kg · Membership: {{ client.membership_status }}</p>
+</div>
+
+<div class="card">
+  <h3>Add Weekly Adherence</h3>
+  <form method="post" action="{{ url_for('clients.add_progress', name=client.name) }}">
+    <input type="text" name="week" placeholder="Week label (e.g. Week 18 - 2026)">
+    <input type="number" name="adherence" placeholder="Adherence %" min="0" max="100" required>
+    <input type="submit" value="Log">
+  </form>
+</div>
+
+<div class="card">
+  <h3>Progress History</h3>
+  {% if progress %}
+  <table>
+    <thead><tr><th>Week</th><th>Adherence</th></tr></thead>
+    <tbody>
+      {% for p in progress %}<tr><td>{{ p.week }}</td><td>{{ p.adherence }}%</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  {% else %}<p>No progress logged yet.</p>{% endif %}
+</div>
+{% endblock %}

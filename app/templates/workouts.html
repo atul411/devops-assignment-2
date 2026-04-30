@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ client_name }} workouts · ACEest Fitness{% endblock %}
+{% block content %}
+<h2>Workouts: {{ client_name }}</h2>
+<table>
+  <thead><tr><th>Date</th><th>Type</th><th>Duration (min)</th><th>Notes</th></tr></thead>
+  <tbody>
+    {% for w in workouts %}
+      <tr><td>{{ w.date }}</td><td>{{ w.workout_type }}</td><td>{{ w.duration_min }}</td><td>{{ w.notes }}</td></tr>
+    {% else %}
+      <tr><td colspan="4">No workouts logged.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

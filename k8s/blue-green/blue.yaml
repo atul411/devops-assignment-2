@@ -1,0 +1,42 @@
+# Blue/Green deployment: TWO deployments share the app=aceest-fitness label
+# but differ on `version` (blue vs green). The Service selects ONE color via
+# its `version:` selector. Switching = patch the Service selector.
+#
+# Initial state: blue serves traffic (v2), green is dormant (v3 staging).
+# To go live with v3: ./scripts/bluegreen-switch.sh green
+# To roll back instantly:           ./scripts/bluegreen-switch.sh blue
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-fitness-blue
+  namespace: aceest
+  labels:
+    app: aceest-fitness
+    color: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aceest-fitness
+      color: blue
+  template:
+    metadata:
+      labels:
+        app: aceest-fitness
+        color: blue
+        version: v2
+    spec:
+      containers:
+        - name: app
+          image: atul411/aceest-fitness:v2.0.0
+          ports: [{ containerPort: 5000, name: http }]
+          env:
+            - name: FEATURE_LEVEL
+              value: "2"
+            - name: APP_VERSION
+              value: "2.0.0"
+          envFrom:
+            - configMapRef: { name: aceest-config }
+            - secretRef:    { name: aceest-secrets }
+          readinessProbe: { httpGet: { path: /ready, port: http }, initialDelaySeconds: 5, periodSeconds: 5 }
+          livenessProbe:  { httpGet: { path: /health, port: http }, initialDelaySeconds: 15, periodSeconds: 20 }

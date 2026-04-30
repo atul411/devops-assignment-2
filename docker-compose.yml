@@ -1,0 +1,18 @@
+services:
+  aceest:
+    build: .
+    image: aceest-fitness:dev
+    container_name: aceest-fitness
+    ports:
+      - "5000:5000"
+    environment:
+      FEATURE_LEVEL: "3"
+      APP_VERSION: "3.0.0-dev"
+      SECRET_KEY: "local-dev-not-secret"
+      DATABASE: "/data/aceest_fitness.db"
+    volumes:
+      - aceest-data:/data
+    restart: unless-stopped
+
+volumes:
+  aceest-data:

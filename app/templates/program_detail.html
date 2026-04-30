@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ program.name }} · ACEest Fitness{% endblock %}
+{% block content %}
+<div class="card" style="border-left-color: {{ program.color }}">
+  <h2 style="color: {{ program.color }}">{{ program.name }} ({{ program.key }})</h2>
+  <p><strong>Calorie factor:</strong> {{ program.factor }} kcal/kg</p>
+  <h3>Workout</h3>
+  <pre>{{ program.workout }}</pre>
+  <h3>Diet</h3>
+  <pre>{{ program.diet }}</pre>
+  <h3>Calorie Calculator</h3>
+  <form method="get" action="{{ url_for('programs.calorie_calc', key=program.key) }}">
+    <label>Weight (kg): <input type="number" step="0.1" name="weight" required></label>
+    <input type="submit" value="Calculate">
+  </form>
+</div>
+{% endblock %}
