@@ -50,9 +50,17 @@ compose-down:
 clean:
 	rm -rf .pytest_cache .coverage coverage.xml htmlcov test-results.xml aceest_dev.db __pycache__ app/__pycache__ tests/__pycache__
 
-pdf: html submission/REPORT.pdf submission/SUBMIT.pdf submission/sonar-REPORT.pdf
+pdf: html submission/REPORT.pdf submission/SUBMIT.pdf submission/sonar-REPORT.pdf submission/FINAL_SUBMISSION.pdf
 
 CHROME ?= /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+submission/FINAL_SUBMISSION.html: docs/FINAL_SUBMISSION.md
+	@mkdir -p submission
+	pandoc docs/FINAL_SUBMISSION.md -o $@ \
+	  --standalone --embed-resources \
+	  --resource-path=docs:docs/screenshots:. \
+	  --metadata title="ACEest Fitness — DevOps CI/CD Final Submission" \
+	  --css=https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css
 
 submission/%.pdf: submission/%.html
 	@if [ -x "$(CHROME)" ]; then \
@@ -66,6 +74,8 @@ submission/%.pdf: submission/%.html
 	  echo "PDF generation needs Chrome or pandoc+basictex. HTML available at $<"; \
 	  exit 1; \
 	fi
+
+html: submission/REPORT.html submission/SUBMIT.html submission/sonar-REPORT.html submission/FINAL_SUBMISSION.html
 
 submission:
 	mkdir -p submission
