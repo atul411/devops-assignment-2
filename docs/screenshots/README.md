@@ -32,7 +32,7 @@ Once you set the `DOCKERHUB_TOKEN` secret and a CI run pushes the image:
 
 | # | What | URL | Filename |
 |---|------|-----|----------|
-| 7 | Docker Hub repo with all tags | https://hub.docker.com/r/atul411/aceest-fitness/tags | `dockerhub-tags.png` |
+| 7 | Docker Hub repo with all tags | https://hub.docker.com/r/atulyadav123/aceest-fitness/tags | `dockerhub-tags.png` |
 
 ## 📷 After K8s deployment (additional, if you do cloud K8s)
 

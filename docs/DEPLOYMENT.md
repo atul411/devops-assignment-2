@@ -9,14 +9,14 @@ This file walks through what's left to make the cluster fully live and reachable
 - ✅ Local Minikube cluster: up (control plane Running, ingress addon enabled)
 - ✅ K8s manifests: all 6 strategy folders apply cleanly via `kubectl apply -k k8s/<strategy>/`
 - ✅ GitHub Actions CI run: passed (test job 36s, docker build job 13s)
-- ⚠️ Pods on Minikube: `ImagePullBackOff` — image `atul411/aceest-fitness:latest` is not on Docker Hub yet (needs your account)
+- ⚠️ Pods on Minikube: `ImagePullBackOff` — image `atulyadav123/aceest-fitness:latest` is not on Docker Hub yet (needs your account)
 - ⚠️ Local Docker build: blocked by Zscaler TLS interception inside the python:3.12-slim build container (corp-network specific). Build succeeds in clean networks (proven by GH Actions).
 
 ## Remaining steps you need to do
 
 ### 1. Create a Docker Hub account and access token (5 min)
 
-1. Sign up at https://hub.docker.com using username **`atul411`** (or update placeholders if different).
+1. Sign up at https://hub.docker.com using username **`atulyadav123`** (or update placeholders if different).
 2. Settings → Personal access tokens → New Access Token → name `gh-actions-push`, permission **Read, Write, Delete**.
 3. Copy the token (shown only once).
 
@@ -39,7 +39,7 @@ git push
 gh run watch
 ```
 
-Confirm the image landed: https://hub.docker.com/r/atul411/aceest-fitness/tags
+Confirm the image landed: https://hub.docker.com/r/atulyadav123/aceest-fitness/tags
 
 ### 4. Choose a target cluster
 
@@ -98,7 +98,7 @@ kubectl get svc aceest-fitness -n aceest --watch    # wait for EXTERNAL-IP
 kubectl apply -k k8s/base/
 kubectl apply -k k8s/rolling-update/
 # Then update the image tag and watch:
-kubectl set image deployment/aceest-fitness app=atul411/aceest-fitness:v3.0.0 -n aceest
+kubectl set image deployment/aceest-fitness app=atulyadav123/aceest-fitness:v3.0.0 -n aceest
 kubectl rollout status deployment/aceest-fitness -n aceest
 
 # Blue/Green
@@ -171,7 +171,7 @@ After completing the steps above:
 |----------|-------|
 | GitHub repo (public) | https://github.com/atul411/devops-assignment-2 |
 | GitHub Actions runs | https://github.com/atul411/devops-assignment-2/actions |
-| Docker Hub repo | https://hub.docker.com/r/atul411/aceest-fitness/tags |
+| Docker Hub repo | https://hub.docker.com/r/atulyadav123/aceest-fitness/tags |
 | Cluster endpoint | The `EXTERNAL-IP` from `kubectl get svc aceest-fitness -n aceest` after switching to LoadBalancer |
 | Jenkins URL | Whatever you expose (or screenshots of the pipeline runs) |
 | SonarQube URL | Whatever you expose (or screenshots of the dashboard) |

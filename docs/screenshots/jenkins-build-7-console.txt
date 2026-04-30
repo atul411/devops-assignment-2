@@ -229,7 +229,7 @@ Stage "Deploy to Kubernetes (Rolling Update)" skipped due to when conditional
 [Pipeline] archiveArtifacts
 Archiving artifacts
 [Pipeline] echo
-Build #7 succeeded for atul411/aceest-fitness:7
+Build #7 succeeded for atulyadav123/aceest-fitness:7
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] }

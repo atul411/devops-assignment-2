@@ -72,7 +72,7 @@ These cannot be automated from inside your work network or without your personal
 
 The assignment requires "your own docker image-repo with all versions of the application". Do this:
 
-1. Sign up at https://hub.docker.com using username **`atul411`**.
+1. Sign up at https://hub.docker.com using username **`atulyadav123`**.
 2. After login → **Account Settings** → **Personal access tokens** → **Generate new token**.
    - Token name: `ci-push`
    - Expiration: 90 days (or no expiry)
@@ -88,9 +88,9 @@ The assignment requires "your own docker image-repo with all versions of the app
    gh run watch
    ```
 4. After the workflow completes (~1 min), confirm at:
-   https://hub.docker.com/r/atul411/aceest-fitness/tags
+   https://hub.docker.com/r/atulyadav123/aceest-fitness/tags
    — you should see `latest`, `v1.0.0`, `v2.0.0`, `v3.0.0`, and a SHA tag.
-5. **Copy this URL into your submission**: `https://hub.docker.com/r/atul411/aceest-fitness`
+5. **Copy this URL into your submission**: `https://hub.docker.com/r/atulyadav123/aceest-fitness`
 
 ### Step 2 — Spin up a public-IP Kubernetes cluster (15-30 min)
 
@@ -114,7 +114,7 @@ doctl kubernetes cluster kubeconfig save aceest
 
 # 5. Deploy
 kubectl apply -k k8s/base/
-kubectl set image deployment/aceest-fitness app=atul411/aceest-fitness:v3.0.0 -n aceest
+kubectl set image deployment/aceest-fitness app=atulyadav123/aceest-fitness:v3.0.0 -n aceest
 kubectl rollout status deployment/aceest-fitness -n aceest
 
 # 6. Switch Service to LoadBalancer (gives a public IP)
@@ -142,7 +142,7 @@ After Step 2, walk through each strategy and capture screenshots:
 ```bash
 # Strategy 1: Rolling Update (default)
 kubectl apply -k k8s/rolling-update/
-kubectl set image deployment/aceest-fitness app=atul411/aceest-fitness:v2.0.0 -n aceest
+kubectl set image deployment/aceest-fitness app=atulyadav123/aceest-fitness:v2.0.0 -n aceest
 kubectl rollout status deployment/aceest-fitness -n aceest
 # Screenshot: kubectl get pods -n aceest -w during the rollout
 
@@ -203,7 +203,7 @@ Tick these off before clicking "Submit":
 - [ ] All three tags exist: v1.0.0, v2.0.0, v3.0.0
 
 ### Docker
-- [ ] Docker Hub repo is public: https://hub.docker.com/r/atul411/aceest-fitness
+- [ ] Docker Hub repo is public: https://hub.docker.com/r/atulyadav123/aceest-fitness
 - [ ] All 4 image tags visible (latest, v1.0.0, v2.0.0, v3.0.0)
 
 ### Cluster
@@ -245,7 +245,7 @@ Submission artefacts:
    https://github.com/atul411/devops-assignment-2/actions
 
 3. Docker Hub image registry (all 3 versions):
-   https://hub.docker.com/r/atul411/aceest-fitness
+   https://hub.docker.com/r/atulyadav123/aceest-fitness
 
 4. Live cluster endpoint (Kubernetes):
    http://<EXTERNAL-IP>/programs

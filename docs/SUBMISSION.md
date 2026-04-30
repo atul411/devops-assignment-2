@@ -140,7 +140,7 @@ These are blockers that genuinely require **your** account/network — I cannot 
 
 ### Step 1 — Push the Docker image to Docker Hub (~10 min)
 
-1. Sign up at https://hub.docker.com using username **`atul411`** (or update placeholders in repo if different).
+1. Sign up at https://hub.docker.com using username **`atulyadav123`** (or update placeholders in repo if different).
 2. Profile → **Personal access tokens** → New Access Token, scope **Read/Write/Delete**, name `ci-push`. Copy the token.
 3. From the repo:
    ```bash
@@ -151,7 +151,7 @@ These are blockers that genuinely require **your** account/network — I cannot 
    git push
    gh run watch
    ```
-4. Verify image lands at https://hub.docker.com/r/atul411/aceest-fitness/tags — should see `latest`, `v1.0.0`, `v2.0.0`, `v3.0.0`, and a SHA tag.
+4. Verify image lands at https://hub.docker.com/r/atulyadav123/aceest-fitness/tags — should see `latest`, `v1.0.0`, `v2.0.0`, `v3.0.0`, and a SHA tag.
 
 ### Step 2 — Bring up a publicly-reachable cluster (~15-30 min)
 
@@ -190,7 +190,7 @@ Once Step 2 is done, walk through each strategy live (DEPLOYMENT.md § 5 for the
 |------|-------------|-----------------|
 | GitHub Actions green | https://github.com/atul411/devops-assignment-2/actions | Latest workflow runs all green |
 | SonarQube dashboard | http://localhost:9000/dashboard?id=aceest-fitness | Quality Gate "Passed" + metrics |
-| Docker Hub repo | https://hub.docker.com/r/atul411/aceest-fitness/tags | All 4 tags listed |
+| Docker Hub repo | https://hub.docker.com/r/atulyadav123/aceest-fitness/tags | All 4 tags listed |
 | Jenkins build | http://localhost:8080/job/aceest-fitness/ | Green build with stage view |
 | Live cluster | http://`<EXTERNAL-IP>`/programs | App responding |
 | K8s deployments | `kubectl get all -n aceest` | All pods Running |

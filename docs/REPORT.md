@@ -108,5 +108,5 @@ All five are implemented in `k8s/<strategy>/` and can be applied independently w
 | Deployment playbook | `docs/DEPLOYMENT.md` |
 
 GitHub repository: **https://github.com/atul411/devops-assignment-2** (public)
-Docker Hub: **https://hub.docker.com/r/atul411/aceest-fitness** (push triggered by `DOCKERHUB_TOKEN` secret in repo)
+Docker Hub: **https://hub.docker.com/r/atulyadav123/aceest-fitness** (push triggered by `DOCKERHUB_TOKEN` secret in repo)
 Cluster endpoint: see `docs/SUBMISSION.md` § 5 step 2 for spinning up a free-tier DigitalOcean K8s cluster (`kubectl get svc aceest-fitness -n aceest` → `EXTERNAL-IP`)

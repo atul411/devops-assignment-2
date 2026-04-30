@@ -113,7 +113,7 @@ This repo is pre-configured for the following identities — replace if you fork
 | Identifier | Value | Used in |
 |------------|-------|---------|
 | GitHub repo | `atul411/devops-assignment-2` | Dockerfile LABEL, README links |
-| Docker Hub repo | `atul411/aceest-fitness` | Dockerfile, Jenkinsfile, all `k8s/*/*.yaml` |
+| Docker Hub repo | `atulyadav123/aceest-fitness` | Dockerfile, Jenkinsfile, all `k8s/*/*.yaml` |
 | Jenkins credential ID | `dockerhub-credentials` | `Jenkinsfile` (configure under Jenkins → Credentials) |
 | Jenkins credential ID | `kubeconfig` | `Jenkinsfile` (kubeconfig file credential) |
 | Ingress hostname | `aceest.local` | All `k8s/**/ingress*.yaml` (replace with your real hostname) |

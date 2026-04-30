@@ -1,5 +1,5 @@
 // Jenkins declarative pipeline for ACEest Fitness
-// Pre-configured for Docker Hub user `atul411`. Replace credential IDs
+// Pre-configured for Docker Hub user `atulyadav123`. Replace credential IDs
 // (`dockerhub-credentials`, `kubeconfig`) under Jenkins → Manage Credentials.
 // Production note: SCM polling is used here for academic demo;
 // in production prefer GitHub webhook -> Jenkins for instant builds.
@@ -27,7 +27,7 @@ pipeline {
     }
 
     environment {
-        DOCKERHUB_USER     = 'atul411'
+        DOCKERHUB_USER     = 'atulyadav123'
         IMAGE_NAME         = "${DOCKERHUB_USER}/aceest-fitness"
         IMAGE_TAG          = "${env.BUILD_NUMBER}"
         K8S_NAMESPACE      = 'aceest'

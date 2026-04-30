@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: atul411/aceest-fitness:v3.0.0
+          image: atulyadav123/aceest-fitness:v3.0.0
           ports: [{ containerPort: 5000, name: http }]
           envFrom:
             - configMapRef: { name: aceest-config }

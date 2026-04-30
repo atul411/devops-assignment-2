@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: atul411/aceest-fitness:latest
+          image: atulyadav123/aceest-fitness:latest
           ports:
             - containerPort: 5000
               name: http
