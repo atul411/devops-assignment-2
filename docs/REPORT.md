@@ -1,8 +1,12 @@
 # ACEest Fitness — DevOps CI/CD Implementation Report
 
-**Course:** Introduction to DEVOPS (CSIZG514 / SEZG514) — S1-25
-**Assignment:** 2 — End-to-end CI/CD pipeline for ACEest Fitness & Gym
-**Submission date:** 2026-04-30
+**Student:** Atul Yadav  
+**Roll Number:** 2024tm93580  
+**Email:** 2024tm93580@wilp.bits-pilani.ac.in  
+**Course:** Introduction to DEVOPS (CSIZG514 / SEZG514) — S1-25  
+**Assignment:** 2 — DevOps CI/CD implementation for ACEest Fitness & Gym  
+**Submission date:** 2026-04-30  
+**GitHub repository:** https://github.com/atul411/devops-assignment-2
 
 ---
 

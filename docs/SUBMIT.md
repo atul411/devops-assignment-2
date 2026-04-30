@@ -1,5 +1,12 @@
 # 📦 How to submit this assignment — final guide
 
+**Student**: Atul Yadav  
+**Roll Number**: 2024tm93580  
+**Email**: 2024tm93580@wilp.bits-pilani.ac.in  
+**Course**: Introduction to DEVOPS (CSIZG514 / SEZG514) — S1-25  
+**Assignment**: 2 — DevOps CI/CD implementation for ACEest Fitness & Gym  
+**GitHub repository**: https://github.com/atul411/devops-assignment-2
+
 This is the single document you need to follow to submit Assignment 2 (DevOps CI/CD for ACEest Fitness).
 
 ---

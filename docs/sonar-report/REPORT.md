@@ -1,5 +1,12 @@
 # SonarQube Analysis Report — ACEest Fitness
 
+**Student**: Atul Yadav  
+**Roll Number**: 2024tm93580  
+**Email**: 2024tm93580@wilp.bits-pilani.ac.in  
+**Course**: Introduction to DEVOPS (CSIZG514 / SEZG514) — S1-25  
+**Assignment**: 2 — DevOps CI/CD implementation  
+**GitHub repository**: https://github.com/atul411/devops-assignment-2
+
 **Run timestamp**: 2026-04-30  
 **Project**: aceest-fitness  
 **Scanner**: sonarsource/sonar-scanner-cli (containerized)  

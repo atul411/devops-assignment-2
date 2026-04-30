@@ -1,5 +1,11 @@
 # ACEest Fitness & Gym — DevOps CI/CD
 
+**Student**: Atul Yadav  
+**Roll Number**: 2024tm93580  
+**Email**: 2024tm93580@wilp.bits-pilani.ac.in  
+**Course**: Introduction to DEVOPS (CSIZG514 / SEZG514) — S1-25 · **Assignment 2**  
+**GitHub**: https://github.com/atul411/devops-assignment-2
+
 A Flask-based fitness management application with a complete CI/CD pipeline implementation for the **Introduction to DEVOPS (CSIZG514/SEZG514)** Assignment 2.
 
 The original assignment provided a Tkinter desktop app across 10 incremental versions; this repository ports the domain (programs, clients, workouts, progress) into a Flask web service and wraps it in a fully automated DevOps pipeline.
