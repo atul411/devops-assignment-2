@@ -5,10 +5,14 @@
 // in production prefer GitHub webhook -> Jenkins for instant builds.
 //
 // Stages that need optional infrastructure (SonarQube, Docker Hub,
-// Kubernetes) are guarded with `when` blocks: they skip cleanly if the
-// corresponding credential / env var is not configured. This means the
-// same Jenkinsfile works on a freshly installed Jenkins (lint+test+build
-// only) AND on a fully-configured one (full pipeline through deploy).
+// Kubernetes) are guarded by environment-variable feature flags:
+//   ENABLE_SONAR=true        -> run SonarQube + Quality Gate stages
+//   ENABLE_DOCKER_PUSH=true  -> run Docker Build + Push stages
+//   ENABLE_DEPLOY=true       -> run Kubernetes deploy stage
+// Set these in Manage Jenkins → System → Global properties → Environment
+// variables, OR per job → Configure → "This project is parameterized".
+// The same Jenkinsfile works on a freshly installed Jenkins
+// (lint+test only) AND on a fully-configured one.
 
 pipeline {
     agent any
@@ -74,34 +78,23 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            when {
-                expression { return env.SONAR_HOST_URL?.trim() || isPluginInstalled('sonar') }
-            }
+            when { environment name: 'ENABLE_SONAR', value: 'true' }
             steps {
-                script {
-                    try {
-                        withSonarQubeEnv('SonarQube') {
-                            sh '''
-                                sonar-scanner \
-                                  -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                                  -Dsonar.sources=app \
-                                  -Dsonar.tests=tests \
-                                  -Dsonar.python.coverage.reportPaths=coverage.xml \
-                                  -Dsonar.python.xunit.reportPath=test-results.xml
-                            '''
-                        }
-                    } catch (Exception e) {
-                        echo "SonarQube not configured (no 'SonarQube' server in Manage Jenkins → System); skipping. Error: ${e.message}"
-                        currentBuild.result = 'SUCCESS'
-                    }
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        sonar-scanner \
+                          -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                          -Dsonar.sources=app \
+                          -Dsonar.tests=tests \
+                          -Dsonar.python.coverage.reportPaths=coverage.xml \
+                          -Dsonar.python.xunit.reportPath=test-results.xml
+                    '''
                 }
             }
         }
 
         stage('Quality Gate') {
-            when {
-                expression { return env.SONAR_HOST_URL?.trim() }
-            }
+            when { environment name: 'ENABLE_SONAR', value: 'true' }
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
@@ -110,9 +103,7 @@ pipeline {
         }
 
         stage('Docker Build') {
-            when {
-                expression { return fileExists('Dockerfile') && sh(script: 'command -v docker', returnStatus: true) == 0 }
-            }
+            when { environment name: 'ENABLE_DOCKER_PUSH', value: 'true' }
             steps {
                 sh '''
                     docker build \
@@ -124,9 +115,7 @@ pipeline {
         }
 
         stage('Docker Push') {
-            when {
-                expression { return credentialsExists('dockerhub-credentials') }
-            }
+            when { environment name: 'ENABLE_DOCKER_PUSH', value: 'true' }
             steps {
                 withCredentials([usernamePassword(
                         credentialsId: 'dockerhub-credentials',
@@ -146,7 +135,7 @@ pipeline {
             when {
                 allOf {
                     branch 'main'
-                    expression { return credentialsExists('kubeconfig') }
+                    environment name: 'ENABLE_DEPLOY', value: 'true'
                 }
             }
             steps {
@@ -170,9 +159,9 @@ pipeline {
         }
         failure {
             echo "Build #${env.BUILD_NUMBER} failed - investigate logs above"
-            // On main branch failure, attempt rollback if kubeconfig is configured
+            // Attempt rollback only on main branch failure when deploy is enabled
             script {
-                if (env.BRANCH_NAME == 'main' && credentialsExists('kubeconfig')) {
+                if (env.BRANCH_NAME == 'main' && env.ENABLE_DEPLOY == 'true') {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh '''
                             kubectl rollout undo deployment/aceest-fitness \
@@ -189,21 +178,4 @@ pipeline {
     }
 }
 
-// Helper: returns true if a plugin is installed (used in `when` blocks)
-boolean isPluginInstalled(String pluginShortName) {
-    return Jenkins.instance.pluginManager.plugins.any { it.shortName == pluginShortName }
-}
-
-// Helper: returns true if a Jenkins credential with this ID exists
-boolean credentialsExists(String credId) {
-    try {
-        def creds = com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(
-            com.cloudbees.plugins.credentials.common.StandardCredentials,
-            Jenkins.instance, null, null
-        )
-        return creds.any { it.id == credId }
-    } catch (Exception e) {
-        return false
-    }
-}
 
