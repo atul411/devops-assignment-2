@@ -36,3 +36,8 @@ aceest_fitness.db
 .env.local
 *.pem
 *.key
+
+# Build artifacts (regenerated via `make submission` / `make pdf`)
+submission/*.zip
+submission/*.pdf
+submission/*.html
